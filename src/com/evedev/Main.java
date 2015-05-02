@@ -14,7 +14,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -55,9 +54,11 @@ public class Main {
 
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/wall.get")
-                .setParameter("domain", "mhkoff")
-                        // .setParameter("access_token", ACCESS_TOKEN)
-                .setParameter("count", "10");
+                //.setParameter("owner_id", "-57948931")
+                .setParameter("domain","nix_solutions")
+                //.setParameter("offset","1")
+                .setParameter("access_token", "c1f003743da92c1c46d7343ba4e4aed26e42240907351df085644ab76a7d1cae297ce869f989336b08091")
+                .setParameter("count", "5");
 
         HttpResponse response = HttpConnectionAgent.connectResponse(uriBuilder);
         Integer status = response.getStatusLine().getStatusCode();
@@ -107,6 +108,8 @@ public class Main {
             } catch (org.json.simple.parser.ParseException e) {
                 e.printStackTrace();
             }
+
+
         }
     }
 }
