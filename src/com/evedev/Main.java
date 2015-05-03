@@ -53,12 +53,15 @@ public class Main {
     public static void main(String[] args) {
 
         URIBuilder uriBuilder = new URIBuilder();
-        uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/wall.get")
+        uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/groups.getMembers")
                 //.setParameter("owner_id", "-57948931")
-                .setParameter("domain","nix_solutions")
+                .setParameter("group_id","57948931")
+                //.setParameter("order","name")
+                //.setParameter("domain","nix_solutions");
                 //.setParameter("offset","1")
+                .setParameter("fields", "first_name,last_name")
                 .setParameter("access_token", "c1f003743da92c1c46d7343ba4e4aed26e42240907351df085644ab76a7d1cae297ce869f989336b08091")
-                .setParameter("count", "5");
+                .setParameter("count", "5000");
 
         HttpResponse response = HttpConnectionAgent.connectResponse(uriBuilder);
         Integer status = response.getStatusLine().getStatusCode();
@@ -78,21 +81,16 @@ public class Main {
             try {
 
                 JSONObject jsonResp = (JSONObject) parser.parse(content.toString());
-                JSONArray postsList = (JSONArray) jsonResp.get("response");
-                JSONObject unicPost = null;
-
-                for (int i = 1; i < postsList.size(); i++) {
-                    unicPost = (JSONObject) postsList.get(i);
+                System.out.println(jsonResp);
+                JSONObject postsList = (JSONObject) jsonResp.get("response");
+                JSONArray users = (JSONArray) postsList.get("users");
+                for (int i = 1; i < users.size(); i++) {
+                    JSONObject unicPost = (JSONObject) users.get(i);
                     System.out.print(i + " ");
                     try {
-                        JSONArray attachments = (JSONArray) unicPost.get("attachments");
-                        for (Object attachment : attachments) {
-                            JSONObject attach = (JSONObject) attachment;
-                            JSONObject photo = (JSONObject) attach.get("photo");
-                            Object src_big = photo.get("src_big");
-
-                            System.out.println(src_big);
-                        }
+                        Object first_name = unicPost.get("first_name");
+                        Object last_name = unicPost.get("last_name");
+                        System.out.println(first_name + " " + last_name);
 
 
                     } catch(NullPointerException e){
